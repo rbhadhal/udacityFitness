@@ -4,21 +4,12 @@ import AddEntry from './components/AddEntry'
 import History from './components/History'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { TabNavigator, createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation'
+import { TabNavigator, StackNavigator, createBottomTabNavigator, createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
 import reducer from './reducers'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { purple, white } from './utils/colors'
 import { Constants } from 'expo'
-
-
-function UdaciStatusBar ({backgroundColor, ...props}) {
-  return (
-    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
-      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
-    </View>
-  )
-}
-
+import EntryDetail from './components/EntryDetail'
 
 const RouteConfigs = {
       History: {
@@ -54,10 +45,40 @@ shadowOpacity: 1
 }
 };
 
-const Tabs =
+export const Tabs =
 Platform.OS === "ios"
 ? createBottomTabNavigator(RouteConfigs, TabNavigatorConfig)
 : createMaterialTopTabNavigator(RouteConfigs, TabNavigatorConfig);
+
+function UdaciStatusBar ({backgroundColor, ...props}) {
+  return (
+    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </View>
+  )
+}
+
+const MainNavigator = createStackNavigator({
+  Home: {
+    screen: Tabs,
+    navigationOptions: {
+      header: null
+    }
+  },
+  EntryDetail: {
+    screen: EntryDetail,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  }
+})
+
+
+
+
 
 export default class App extends React.Component {
   render() {
@@ -65,7 +86,7 @@ export default class App extends React.Component {
       <Provider store={createStore(reducer)}>
         <View style={{flex:1}}>
           <UdaciStatusBar backgroundColor={purple} barStyle="light-content" />
-          <Tabs/>
+          <MainNavigator/>
         </View>
       </Provider>
     )
