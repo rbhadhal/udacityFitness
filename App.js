@@ -22,6 +22,13 @@ const RouteConfigs = {
         navigationOptions: {
           tabBarLabel: "Add Entry",
           tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />}},
+      Live: {
+        screen: Live,
+        navigationOptions: {
+          tabBarLabel: 'Live',
+          tabBarIcon: ({ tintColor }) => <Ionicons name='ios-speedometer' size={30} color={tintColor} />
+        }
+      },
 
   };
 
